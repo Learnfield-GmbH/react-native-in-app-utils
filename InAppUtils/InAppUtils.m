@@ -161,7 +161,7 @@ restoreCompletedTransactionsFailedWithError:(NSError *)error
 RCT_EXPORT_METHOD(restorePurchases:(RCTResponseSenderBlock)callback)
 {
     NSString *restoreRequest = @"restoreRequest";
-    _callbacks[RCTKeyForInstance(restoreRequest)] = callback;
+    _callbacks[restoreRequest] = callback;
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
 
@@ -169,7 +169,7 @@ RCT_EXPORT_METHOD(restorePurchasesForUser:(NSString *)username
                     callback:(RCTResponseSenderBlock)callback)
 {
     NSString *restoreRequest = @"restoreRequest";
-    _callbacks[RCTKeyForInstance(restoreRequest)] = callback;
+    _callbacks[restoreRequest] = callback;
     if(!username) {
         callback(@[@"username_required"]);
         return;
@@ -285,4 +285,5 @@ static NSString *RCTKeyForInstance(id instance)
 }
 
 @end
+
 
