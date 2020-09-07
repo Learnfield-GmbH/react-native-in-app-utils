@@ -36,7 +36,7 @@ RCT_EXPORT_MODULE()
     for (SKPaymentTransaction *transaction in transactions) {
         switch (transaction.transactionState) {
             case SKPaymentTransactionStateFailed: {
-                NSString *key = RCTKeyForInstance(transaction.payment.productIdentifier);
+                NSString *key = [[NSString alloc] initWithString:transaction.payment.productIdentifier];
                 RCTResponseSenderBlock callback = _callbacks[key];
                 if (callback) {
                     callback(@[RCTJSErrorFromNSError(transaction.error)]);
@@ -48,7 +48,7 @@ RCT_EXPORT_MODULE()
                 break;
             }
             case SKPaymentTransactionStatePurchased: {
-                NSString *key = RCTKeyForInstance(transaction.payment.productIdentifier);
+                NSString *key = [[NSString alloc] initWithString:transaction.payment.productIdentifier];
                 RCTResponseSenderBlock callback = _callbacks[key];
                 if (callback) {
                     NSDictionary *purchase = [self getPurchaseData:transaction];
@@ -107,7 +107,8 @@ RCT_EXPORT_METHOD(purchaseProduct:(NSString *)productIdentifier
             payment.applicationUsername = username;
         }
         [[SKPaymentQueue defaultQueue] addPayment:payment];
-        _callbacks[RCTKeyForInstance(payment.productIdentifier)] = callback;
+        NSString *key = [[NSString alloc] initWithString:payment.productIdentifier];
+        _callbacks[key] = callback;
     } else {
         callback(@[@"invalid_product"]);
     }
@@ -116,7 +117,7 @@ RCT_EXPORT_METHOD(purchaseProduct:(NSString *)productIdentifier
 - (void)paymentQueue:(SKPaymentQueue *)queue
 restoreCompletedTransactionsFailedWithError:(NSError *)error
 {
-    NSString *key = RCTKeyForInstance(@"restoreRequest");
+    NSString *key = [[NSString alloc] initWithString:@"restoreRequest"];
     RCTResponseSenderBlock callback = _callbacks[key];
     if (callback) {
         switch (error.code)
@@ -284,3 +285,4 @@ static NSString *RCTKeyForInstance(id instance)
 }
 
 @end
+
