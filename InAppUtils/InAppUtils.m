@@ -117,7 +117,7 @@ RCT_EXPORT_METHOD(purchaseProduct:(NSString *)productIdentifier
 - (void)paymentQueue:(SKPaymentQueue *)queue
 restoreCompletedTransactionsFailedWithError:(NSError *)error
 {
-    NSString *key = [[NSString alloc] initWithString:@"restoreRequest"];
+    NSString *key = @"restoreRequest";
     RCTResponseSenderBlock callback = _callbacks[key];
     if (callback) {
         switch (error.code)
@@ -138,7 +138,7 @@ restoreCompletedTransactionsFailedWithError:(NSError *)error
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue
 {
-    NSString *key = RCTKeyForInstance(@"restoreRequest");
+    NSString *key = @"restoreRequest";
     RCTResponseSenderBlock callback = _callbacks[key];
     if (callback) {
         NSMutableArray *productsArrayForJS = [NSMutableArray array];
